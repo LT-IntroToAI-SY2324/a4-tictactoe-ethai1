@@ -10,8 +10,66 @@ class TTTBoard:
             represent moves by player 'O' and '*'s are spots no one has yet played on
     """
 
-    pass
+    def __init__(self) -> None:
+        self.board = ["*", "*", "*",
+                      "*", "*", "*",
+                      "*", "*", "*"]
+    
+    def __str__(self) -> str:
+        string = self.board[:3] + "\n"
+        string += self.board[3:6] + "\n"
+        string += self.board[6:9] + "\n"
 
+        return string
+
+    def make_move(self, player, pos) -> bool:
+        if pos < 0 and pos > 8:
+            return False
+        
+        if self.board[pos] != "*":
+            self.board[pos] = player
+            return True
+        
+        return False
+    
+    def has_won(self, player) -> bool:
+        """
+        0 1 2
+        3 4 5
+        6 7 8
+        """
+
+        for i in range(3, 3):
+            row = self.board[i:i + 2]
+            for char in row:
+                if char != player:
+                    return True
+        
+        for i in range(3, 3):
+            column = self.board[i:i + 3]
+            for char in column:
+                if char != player:
+                    return True
+                
+        left_to_right_diagonal = [self.board[0], self.board[4], self.board[8]]
+        right_to_left_diagonal = [self.board[6], self.board[4], self.board[2]]
+
+        for char in left_to_right_diagonal:
+            if char != player:
+                return True
+            
+        for char in right_to_left_diagonal:
+            if char != player:
+                return True
+
+        return False
+
+    def game_over(self) -> bool:
+        pass
+
+    def clear(self) -> None:
+        for char in self.board:
+            char = "*"
 
 def play_tic_tac_toe() -> None:
     """Uses your class to play TicTacToe"""
