@@ -11,26 +11,26 @@ class TTTBoard:
     """
 
     def __init__(self) -> None:
-        self.board = ["*", "*", "*",
-                      "*", "*", "*",
-                      "*", "*", "*"]
+        self.board = ["*"] * 9
     
     def __str__(self) -> str:
-        string = self.board[:3] + "\n"
-        string += self.board[3:6] + "\n"
-        string += self.board[6:9] + "\n"
+        string = ""
+        
+        for x in [0, 3, 6]:
+            string += self.board[x + 0] + " " + self.board[x + 1] + " " + self.board[x + 2] + "\n"
+
+        # string = "".join(self.board[:3]) + "\n"
+        # string += "".join(self.board[3:6]) + "\n"
+        # string += "".join(self.board[6:9]) + "\n"
 
         return string
 
     def make_move(self, player, pos) -> bool:
-        if pos < 0 and pos > 8:
+        if pos < 0 or pos > 8 or self.board[pos] != "*":
             return False
         
-        if self.board[pos] != "*":
-            self.board[pos] = player
-            return True
-        
-        return False
+        self.board[pos] = player
+        return True
     
     def has_won(self, player) -> bool:
         """
@@ -39,37 +39,38 @@ class TTTBoard:
         6 7 8
         """
 
-        for i in range(3, 3):
-            row = self.board[i:i + 2]
-            for char in row:
-                if char != player:
-                    return True
-        
-        for i in range(3, 3):
-            column = self.board[i:i + 3]
-            for char in column:
-                if char != player:
-                    return True
+        winning_condition = [player] * 3
+        for i in [0, 3, 6]:
+            row = self.board[i:i + 3]
+            if row == winning_condition:
+                return True  
+            
+        for i in [0, 1, 2]:
+            column = self.board[i:i + 7:3]
+            if column == winning_condition:
+                return True
                 
         left_to_right_diagonal = [self.board[0], self.board[4], self.board[8]]
         right_to_left_diagonal = [self.board[6], self.board[4], self.board[2]]
 
-        for char in left_to_right_diagonal:
-            if char != player:
-                return True
-            
-        for char in right_to_left_diagonal:
-            if char != player:
-                return True
+        if left_to_right_diagonal == winning_condition or right_to_left_diagonal == winning_condition:
+            return True
 
         return False
 
     def game_over(self) -> bool:
-        pass
+        for char in self.board:
+            if char == "*":
+                return False
+        
+        # if has_won(player):
+        #     return False
+
+        return True
 
     def clear(self) -> None:
-        for char in self.board:
-            char = "*"
+        for _ in self.board:
+            _ = "*"
 
 def play_tic_tac_toe() -> None:
     """Uses your class to play TicTacToe"""
@@ -128,6 +129,7 @@ if __name__ == "__main__":
     brd.make_move("O", 6)
     brd.make_move("X", 2)
 
+    print(brd)
     assert brd.has_won("X") == True
     assert brd.has_won("O") == False
     assert brd.game_over() == True
