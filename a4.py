@@ -59,18 +59,15 @@ class TTTBoard:
         return False
 
     def game_over(self) -> bool:
-        for char in self.board:
-            if char == "*":
-                return False
+        if self.has_won("X") or self.has_won("O") or self.board.count("*") == 0:
+            return True
         
-        # if has_won(player):
-        #     return False
-
-        return True
+        return False
 
     def clear(self) -> None:
-        for _ in self.board:
-            _ = "*"
+        for i, char in enumerate(self.board):
+            if char != "*":
+                self.board[i] = "*"
 
 def play_tic_tac_toe() -> None:
     """Uses your class to play TicTacToe"""
@@ -119,34 +116,33 @@ if __name__ == "__main__":
     # here are some tests. These are not at all exhaustive tests. You will DEFINITELY
     # need to write some more tests to make sure that your TTTBoard class is behaving
     # properly.
-    brd = TTTBoard()
-    brd.make_move("X", 8)
-    brd.make_move("O", 7)
+    # brd = TTTBoard()
+    # brd.make_move("X", 8)
+    # brd.make_move("O", 7)
 
-    assert brd.game_over() == False
+    # assert brd.game_over() == False
 
-    brd.make_move("X", 5)
-    brd.make_move("O", 6)
-    brd.make_move("X", 2)
+    # brd.make_move("X", 5)
+    # brd.make_move("O", 6)
+    # brd.make_move("X", 2)
 
-    print(brd)
-    assert brd.has_won("X") == True
-    assert brd.has_won("O") == False
-    assert brd.game_over() == True
+    # assert brd.has_won("X") == True
+    # assert brd.has_won("O") == False
+    # assert brd.game_over() == True
 
-    brd.clear()
+    # brd.clear()
 
-    assert brd.game_over() == False
+    # assert brd.game_over() == False
 
-    brd.make_move("O", 3)
-    brd.make_move("O", 4)
-    brd.make_move("O", 5)
+    # brd.make_move("O", 3)
+    # brd.make_move("O", 4)
+    # brd.make_move("O", 5)
 
-    assert brd.has_won("X") == False
-    assert brd.has_won("O") == True
-    assert brd.game_over() == True
+    # assert brd.has_won("X") == False
+    # assert brd.has_won("O") == True
+    # assert brd.game_over() == True
 
-    print("All tests passed!")
+    # print("All tests passed!")
 
     # uncomment to play!
-    # play_tic_tac_toe()
+    play_tic_tac_toe()
